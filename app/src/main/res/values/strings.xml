@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Attendance Tracking</string>
+    <string name="welcome">Welcome To\nAttendance Tracking</string>
+</resources>
