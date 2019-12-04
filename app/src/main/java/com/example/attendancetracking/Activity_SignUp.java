@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.google.android.gms.common.internal.safeparcel.SafeParcelable.NULL;
+
 public class Activity_SignUp extends AppCompatActivity {
 
     TextView Login;
@@ -57,14 +59,22 @@ public class Activity_SignUp extends AppCompatActivity {
 
     private void signUp_user(String user_name, String user_password, String user_confirm_password, String user_dob, String user_email)
     {
-        FirebaseDatabase database=FirebaseDatabase.getInstance();
-        DatabaseReference ref=database.getReference("User");
-        User user= new User(user_name,user_password,user_dob,user_email);
-        ref.push().setValue(user);
-        Toast toast=Toast.makeText(getApplicationContext(),"Signup Successful",Toast.LENGTH_SHORT);
-        toast.show();
-        Intent intent=new Intent(Activity_SignUp.this,login.class);
-        startActivity(intent);
+        if(user_name==NULL || user_password==NULL || user_confirm_password==NULL || user_email==NULL || user_dob==NULL)
+        {
+            Toast toast=Toast.makeText(getApplicationContext(),"You missed something",Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else
+        {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("User");
+            User user = new User(user_name, user_password, user_dob, user_email);
+            ref.push().setValue(user);
+            Toast toast = Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT);
+            toast.show();
+            Intent intent = new Intent(Activity_SignUp.this, login.class);
+            startActivity(intent);
+        }
     }
 
     public void openLogin()
