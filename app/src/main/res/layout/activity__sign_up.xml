@@ -38,7 +38,7 @@
         android:layout_height="45dp"
         android:background="@drawable/curved_black_rect"
         android:hint="   DOB"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:textColor="@color/colorYellow"
         android:textColorHint="@color/colorYellow"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +69,7 @@
         android:layout_height="45dp"
         android:background="@drawable/curved_black_rect"
         android:hint="   Full Name"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:textColor="@color/colorYellow"
         android:textColorHint="@color/colorYellow"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +85,7 @@
         android:layout_height="45dp"
         android:background="@drawable/curved_black_rect"
         android:hint="   email"
-        android:inputType="textPassword"
+        android:inputType="textAutoComplete"
         android:textColor="@color/colorYellow"
         android:textColorHint="@color/colorYellow"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -112,6 +112,8 @@
         app:layout_constraintVertical_bias="0.591" />
 
     <Button
+
+        android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorBlack"
