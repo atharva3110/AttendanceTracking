@@ -35,6 +35,21 @@ public class login extends AppCompatActivity {
         nAuth=FirebaseAuth.getInstance();
         user_name=(EditText)findViewById(R.id.login_email);
         user_password=(EditText)findViewById(R.id.login_password);
+        nAuthListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
+            {
+                if(firebaseAuth.getCurrentUser() != null)
+                {
+                    Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
+                    intent.putExtra("Current_logged",nAuth.getUid().toString());
+                    startActivity(intent);
+                    //Toast.makeText(getApplicationContext(), "You are alredy logged in", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,12 +68,15 @@ public class login extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
                                 Toast.makeText(getApplicationContext(),"You are logged in!",Toast.LENGTH_SHORT).show();
-                                //Enter thr code if user fails to login
+                                //User successfully logs in
+                               Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
+                               intent.putExtra("Current_logged",nAuth.getUid().toString());
+                               startActivity(intent);
                             }
                             else
                             {
                                 Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
-                                //Enter the code after user has logged in here
+                                //Login fail
                             }
                         }
                     });
@@ -72,6 +90,12 @@ public class login extends AppCompatActivity {
                 openSignUp();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        nAuth.addAuthStateListener(nAuthListener);
     }
 
     public void openSignUp() {

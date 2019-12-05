@@ -2,10 +2,10 @@ package com.example.attendancetracking;
 
 public class User
 {
-    public String name;
-    public String email;
-    public String dob;
-    public String password;
+    public final String name;
+    public final String email;
+    public final String dob;
+    public final String password;
 
 
     public User(String name,String password,String dob,String email)

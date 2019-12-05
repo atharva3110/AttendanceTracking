@@ -28,6 +28,7 @@ public class Activity_SignUp extends AppCompatActivity {
     Button signUp;
     EditText name,password,confirm_password,dob,email;
     private FirebaseAuth nAuth;
+    public String key;
 
 
     @Override
@@ -67,7 +68,7 @@ public class Activity_SignUp extends AppCompatActivity {
         });
     }
 
-    private void signUp_user(String user_name, String user_password, String user_confirm_password, String user_dob, String user_email)
+    private void signUp_user(final String user_name, final String user_password, String user_confirm_password, final String user_dob, final String user_email)
     {
         if(user_name.isEmpty() || user_password.isEmpty() || user_confirm_password.isEmpty() || user_email.isEmpty() || user_dob.isEmpty())
         {
@@ -90,10 +91,10 @@ public class Activity_SignUp extends AppCompatActivity {
                }
                else
                {
-                   FirebaseDatabase database = FirebaseDatabase.getInstance();
-                   DatabaseReference ref = database.getReference("User");
-                   User user = new User(user_name, user_password, user_dob, user_email);
-                   ref.push().setValue(user);
+
+
+                 //  ref.push().setValue(user);
+
 
                    Intent intent = new Intent(Activity_SignUp.this, login.class);
                    startActivity(intent);
@@ -102,8 +103,15 @@ public class Activity_SignUp extends AppCompatActivity {
                        public void onComplete(@NonNull Task<AuthResult> task) {
                            if(task.isSuccessful())
                            {
+                               FirebaseDatabase database = FirebaseDatabase.getInstance();
+                               DatabaseReference ref = database.getReference("User");
+                               key=nAuth.getUid();
+                               DatabaseReference root = ref.child(key);
+                               User user = new User(user_name, user_password, user_dob, user_email);
+                               root.setValue(user);
                                Toast toast = Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT);
                                toast.show();
+
                            }
                            if(!task.isSuccessful())
                            {
@@ -112,6 +120,9 @@ public class Activity_SignUp extends AppCompatActivity {
                            }
                        }
                    });
+
+
+
                }
             }
         }
