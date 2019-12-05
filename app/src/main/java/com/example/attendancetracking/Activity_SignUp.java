@@ -1,5 +1,6 @@
 package com.example.attendancetracking;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -11,6 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.SuccessContinuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,6 +27,8 @@ public class Activity_SignUp extends AppCompatActivity {
     TextView Login;
     Button signUp;
     EditText name,password,confirm_password,dob,email;
+    private FirebaseAuth nAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +42,7 @@ public class Activity_SignUp extends AppCompatActivity {
         email=(EditText)findViewById(R.id.signup_email);
         dob=(EditText)findViewById(R.id.signup_dob);
         signUp=(Button)findViewById(R.id.btnSignUp);
+        nAuth=FirebaseAuth.getInstance();
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -44,6 +54,7 @@ public class Activity_SignUp extends AppCompatActivity {
                 user_dob=dob.getText().toString().trim();
                 user_confirm_password=confirm_password.getText().toString().trim();
                 signUp_user(user_name,user_password,user_confirm_password,user_dob,user_email);
+
             }
         });
         Login.setOnClickListener(new View.OnClickListener() {
@@ -73,14 +84,35 @@ public class Activity_SignUp extends AppCompatActivity {
             }
             else
             {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("User");
-                User user = new User(user_name, user_password, user_dob, user_email);
-                ref.push().setValue(user);
-                Toast toast = Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT);
-                toast.show();
-                Intent intent = new Intent(Activity_SignUp.this, login.class);
-                startActivity(intent);
+               if(user_password.length()<6)
+               {
+                   Toast.makeText(getApplicationContext(),"Password should be atleast 6 characters long!",Toast.LENGTH_SHORT).show();
+               }
+               else
+               {
+                   FirebaseDatabase database = FirebaseDatabase.getInstance();
+                   DatabaseReference ref = database.getReference("User");
+                   User user = new User(user_name, user_password, user_dob, user_email);
+                   ref.push().setValue(user);
+
+                   Intent intent = new Intent(Activity_SignUp.this, login.class);
+                   startActivity(intent);
+                   nAuth.createUserWithEmailAndPassword(user_email,user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                       @Override
+                       public void onComplete(@NonNull Task<AuthResult> task) {
+                           if(task.isSuccessful())
+                           {
+                               Toast toast = Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT);
+                               toast.show();
+                           }
+                           if(!task.isSuccessful())
+                           {
+                               Toast t=Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT);
+                               t.show();
+                           }
+                       }
+                   });
+               }
             }
         }
     }
