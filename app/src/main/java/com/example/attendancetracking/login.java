@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class login extends AppCompatActivity {
 
@@ -23,7 +24,18 @@ public class login extends AppCompatActivity {
     private Button login;
     private FirebaseAuth nAuth;
     private FirebaseAuth.AuthStateListener nAuthListener;
+    private FirebaseUser user;
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        nAuth = FirebaseAuth.getInstance();
+        nAuth.addAuthStateListener(nAuthListener);
+        user = nAuth.getCurrentUser();
+        if(user!=null) {
+            startActivity(new Intent(login.this,Test_Activity.class));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +44,13 @@ public class login extends AppCompatActivity {
 
         signup = (TextView) findViewById(R.id.signup);
         login=(Button)findViewById(R.id.btnLogin);
-        nAuth=FirebaseAuth.getInstance();
         user_name=(EditText)findViewById(R.id.login_email);
         user_password=(EditText)findViewById(R.id.login_password);
+
         nAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
-            {
-                if(firebaseAuth.getCurrentUser() != null)
-                {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
                     Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
                     intent.putExtra("Current_logged",nAuth.getUid().toString());
                     startActivity(intent);
@@ -49,32 +59,22 @@ public class login extends AppCompatActivity {
             }
         };
 
-
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(user_name.getText().toString().isEmpty() || user_password.getText().toString().isEmpty())
-                {
+            public void onClick(View v) {
+                if(user_name.getText().toString().isEmpty() || user_password.getText().toString().isEmpty()) {
                     Toast.makeText(getApplicationContext(),"You missed something!",Toast.LENGTH_SHORT).show(); //If any field is left empty
-                }
-                else
-                {
+                } else {
                     nAuth.signInWithEmailAndPassword(user_name.getText().toString(),user_password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task)
                         {
-                            if(task.isSuccessful())
-                            {
+                            if(task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(),"You are logged in!",Toast.LENGTH_SHORT).show();
                                 //User successfully logs in
                                Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
-                               intent.putExtra("Current_logged",nAuth.getUid().toString());
                                startActivity(intent);
-                            }
-                            else
-                            {
+                            } else {
                                 Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
                                 //Login fail
                             }
@@ -92,15 +92,8 @@ public class login extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        nAuth.addAuthStateListener(nAuthListener);
-    }
-
     public void openSignUp() {
         Intent intent = new Intent(this, Activity_SignUp.class);
         startActivity(intent);
-
     }
 }

@@ -16,9 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         startBtn = (Button) findViewById(R.id.start_btn);
-
         startBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     
 
     public void openLogin() {
-        Intent intent = new Intent(this, login.class);
-        startActivity(intent);
+        startActivity(new Intent(this, login.class));
     }
 }
