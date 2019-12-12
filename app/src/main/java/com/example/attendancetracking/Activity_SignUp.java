@@ -32,13 +32,13 @@ public class Activity_SignUp extends AppCompatActivity {
         setContentView(R.layout.activity__sign_up);
 
         Login = (TextView) findViewById(R.id.login);
-        name=(EditText)findViewById(R.id.signup_name);
-        password=(EditText)findViewById(R.id.login_password);
-        confirm_password=(EditText)findViewById(R.id.signup_confm_password);
-        email=(EditText)findViewById(R.id.signup_email);
-        dob=(EditText)findViewById(R.id.signup_dob);
-        signUp=(Button)findViewById(R.id.btnSignUp);
-        nAuth=FirebaseAuth.getInstance();
+        name = (EditText)findViewById(R.id.signup_name);
+        password = (EditText)findViewById(R.id.login_password);
+        confirm_password = (EditText)findViewById(R.id.signup_confm_password);
+        email = (EditText)findViewById(R.id.signup_email);
+        dob = (EditText)findViewById(R.id.signup_dob);
+        signUp = (Button)findViewById(R.id.btnSignUp);
+        nAuth = FirebaseAuth.getInstance();
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,12 +89,10 @@ public class Activity_SignUp extends AppCompatActivity {
                                root.setValue(user);
                                Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT).show();
                            } else {
-                               Toast t=Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT);
-                               t.show();
+                               Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT).show();
                            }
                        }
                    });
-
             }
         }
     }

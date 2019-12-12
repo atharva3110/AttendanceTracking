@@ -27,17 +27,6 @@ public class login extends AppCompatActivity {
     private FirebaseUser user;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        nAuth = FirebaseAuth.getInstance();
-        nAuth.addAuthStateListener(nAuthListener);
-        user = nAuth.getCurrentUser();
-        if(user!=null) {
-            startActivity(new Intent(this,Test_Activity.class));
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -47,36 +36,23 @@ public class login extends AppCompatActivity {
         user_name=(EditText)findViewById(R.id.login_email);
         user_password=(EditText)findViewById(R.id.login_password);
 
-        nAuthListener=new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null) {
-                    Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
-                    intent.putExtra("Current_logged",nAuth.getUid().toString());
-                    startActivity(intent);
-                    //Toast.makeText(getApplicationContext(), "You are alredy logged in", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(user_name.getText().toString().isEmpty() || user_password.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(),"You missed something!",Toast.LENGTH_SHORT).show(); //If any field is left empty
+                    Toast.makeText(login.this,"You missed something!",Toast.LENGTH_SHORT).show(); //If any field is left empty
                 } else {
-                    nAuth.signInWithEmailAndPassword(user_name.getText().toString(),user_password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    nAuth.signInWithEmailAndPassword(user_name.getText().toString(),user_password.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task)
                         {
                             if(task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(),"You are logged in!",Toast.LENGTH_SHORT).show();
-                                //User successfully logs in
-                               Intent intent=new Intent(com.example.attendancetracking.login.this,Test_Activity.class);
-                               startActivity(intent);
+                                Intent intent=new Intent(login.this,Test_Activity.class);
+                                startActivity(intent);
                             } else {
-                                Toast.makeText(getApplicationContext(),"Login unsuccessful",Toast.LENGTH_SHORT).show();
-                                //Login fail
+                                Toast.makeText(login.this,"Login unsuccessful",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -87,12 +63,22 @@ public class login extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSignUp();
+                openSignUp(v);
             }
         });
     }
 
-    public void openSignUp() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        nAuth = FirebaseAuth.getInstance();
+        user = nAuth.getCurrentUser();
+        if(user!=null) {
+            startActivity(new Intent(this,Test_Activity.class));
+        }
+    }
+
+    public void openSignUp(View v) {
         Intent intent = new Intent(this, Activity_SignUp.class);
         startActivity(intent);
     }

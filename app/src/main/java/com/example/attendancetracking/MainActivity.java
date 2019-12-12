@@ -15,14 +15,6 @@ public class MainActivity extends AppCompatActivity {
     Button startBtn;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, Test_Activity.class));
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -34,7 +26,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(this, Test_Activity.class));
+            MainActivity.this.finish();
+        }
+    }
 
     public void openLogin() {
         startActivity(new Intent(this, login.class));

@@ -20,18 +20,16 @@ public class Test_Activity extends AppCompatActivity {
     FirebaseUser user;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
         logout = (Button)findViewById(R.id.btnLogout);
         user_id = (TextView)findViewById(R.id.txtId);
+
         String id = user.getUid();
         user_id.setText(id);
 
@@ -42,5 +40,10 @@ public class Test_Activity extends AppCompatActivity {
                 startActivity(new Intent(Test_Activity.this,login.class));
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

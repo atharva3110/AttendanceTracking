@@ -30,11 +30,6 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
     ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

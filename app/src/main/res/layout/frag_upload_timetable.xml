@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select week"
+            android:textColor="@color/colorBlack"
+            android:textSize="30sp"
+            android:gravity="center_horizontal"
+            android:padding="20dp"/>
+
+        <Spinner
+            android:id="@+id/week_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="Week Selector" />
+
+        <ListView
+            android:id="@+id/subject_collector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:descendantFocusability="beforeDescendants"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            android:text="Add subject"
+            android:textColor="@color/colorYellow"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/save_timetable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:textColor="@color/colorYellow"
+            android:text="Save"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
