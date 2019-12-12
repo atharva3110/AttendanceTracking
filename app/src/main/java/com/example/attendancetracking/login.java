@@ -33,7 +33,7 @@ public class login extends AppCompatActivity {
         nAuth.addAuthStateListener(nAuthListener);
         user = nAuth.getCurrentUser();
         if(user!=null) {
-            startActivity(new Intent(login.this,Test_Activity.class));
+            startActivity(new Intent(this,Test_Activity.class));
         }
     }
 

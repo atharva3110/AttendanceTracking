@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Test_Activity extends AppCompatActivity {
+
     private Button logout;
     private TextView user_id;
 
@@ -36,11 +37,8 @@ public class Test_Activity extends AppCompatActivity {
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                FirebaseAuth nAuth;
-                nAuth=FirebaseAuth.getInstance();
-                nAuth.signOut();
+            public void onClick(View v) {
+                firebaseAuth.signOut();
                 startActivity(new Intent(Test_Activity.this,login.class));
             }
         });
