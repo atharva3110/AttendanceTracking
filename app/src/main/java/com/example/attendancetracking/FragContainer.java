@@ -1,6 +1,5 @@
 package com.example.attendancetracking;
 
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,16 +25,20 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class FragContainer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TimeTableUploader.TimeTableUploaderListner {
+public class FragContainer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TimeTableUploader.TimeTableUploaderListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.homepage);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,16 +77,28 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
-            break;
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileFragment())
+                        .commit();
+                break;
             case R.id.nav_attendance:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendanceFragment()).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new AttendanceFragment())
+                        .commit();
                 break;
             case R.id.nav_timetable:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TimetableFragment()).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new TimetableFragment())
+                        .commit();
                 break;
             case R.id.nav_subject:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SubjectFragment()).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SubjectFragment())
+                        .commit();
                 break;
             case R.id.nav_logout:
                 logout();
@@ -96,62 +109,58 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
-    //private Button logout;
-    //private TextView user_id;
-
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-
     private void logout() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
         firebaseAuth.signOut();
         startActivity(new Intent(FragContainer.this,login.class));
-
-        //logout = (Button)findViewById(R.id.btnLogout);
-        //user_id = (TextView)findViewById(R.id.txtId);
-
     }
 
-    @Override
-    public void setAdapterForListView(ListView lv, BaseAdapter ba) {
-        ba = new EditTextListAdapter();
-        lv.setAdapter(ba);
-    }
+    /*@Override
+    public void setAdapterForListView(ListView lv, EditTextListAdapter adp) {
+//        adp = new EditTextListAdapter();
+//        lv.setAdapter(adp);
+    }*/
 
-    public class EditTextListAdapter extends BaseAdapter {
+    /*@Override
+    public void addSub(ListView lv, EditTextListAdapter adapter) {
+//        adapter.addMoreItemToList();
+    }*/
+
+    public class EditTextListAdapter /*extends BaseAdapter*/ {
         private LayoutInflater layoutInflater;
         private ArrayList<ListItem> list;
 
         public EditTextListAdapter() {
             super();
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            list = new ArrayList<>();
-            notifyDataSetChanged();
+//            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            list = new ArrayList<>();
+//            notifyDataSetChanged();
         }
         public void addMoreItemToList() {
-            ListItem listItem = new ListItem();
-            listItem.caption = "Subject";
-            list.add(listItem);
+//            ListItem listItem = new ListItem();
+//            listItem.caption = "Subject";
+//            list.add(listItem);
         }
-        @Override
+//        @Override
         public int getCount() {
             return list.size();
         }
 
-        @Override
+//        @Override
         public Object getItem(int i) {
             return i;
         }
 
-        @Override
+//        @Override
         public long getItemId(int i) {
             return i;
         }
 
-        @Override
+//        @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            /*viewGroup.removeView(view);
             ViewHolder holder;
             if(view == null) {
                 holder = new ViewHolder();
@@ -175,7 +184,8 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
                 }
             });
 
-            return view;
+            return view;*/
+            return null;
         }
     }
     class ViewHolder {
