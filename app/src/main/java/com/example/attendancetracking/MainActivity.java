@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, Test_Activity.class));
+            startActivity(new Intent(this, FragContainer.class));
             MainActivity.this.finish();
         }
     }

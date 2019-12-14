@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view" >
 
-    <item android:title="Attendence" />
-    <item android:title="Time table" />
-    <item android:title="Profile" />
-    <item android:title="Logout" />
+    <group android:checkableBehavior="none" >
+        <item android:id="@+id/nav_profile"
+            android:title="Profile"
+            android:icon="@drawable/ic_profile_24dp"/>
+        <item android:id="@+id/nav_attendance"
+            android:title="Attendance"
+            android:icon="@drawable/ic_attendance_24dp"/>
+        <item android:id="@+id/nav_timetable"
+            android:title="Time table"
+            android:icon="@drawable/ic_timetable_24dp"/>
+        <item android:id="@+id/nav_subject"
+            android:title="Subjects"
+            android:icon="@drawable/ic_subject_24dp"/>
+        <item android:id="@+id/nav_logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_logout_24dp"/>
+    </group>
 </menu>

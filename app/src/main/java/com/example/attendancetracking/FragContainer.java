@@ -1,7 +1,7 @@
 package com.example.attendancetracking;
 
-import android.app.LauncherActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,22 +16,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class FragContainer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TimeTableUploader.TimeTableUploaderListner {
+public class FragContainer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, TimeTableUploader.TimeTableUploaderListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.homepage);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -44,6 +51,11 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        /*if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_profile);
+        }*/
+
         if(savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -53,52 +65,102 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
-            default:
-                break;
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
         }
-        return false;
     }
 
     @Override
-    public void setAdapterForListView(ListView lv, BaseAdapter ba) {
-        ba = new EditTextListAdapter();
-        lv.setAdapter(ba);
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch(menuItem.getItemId()) {
+            case R.id.nav_profile:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileFragment())
+                        .commit();
+                break;
+            case R.id.nav_attendance:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new AttendanceFragment())
+                        .commit();
+                break;
+            case R.id.nav_timetable:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new TimetableFragment())
+                        .commit();
+                break;
+            case R.id.nav_subject:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new SubjectFragment())
+                        .commit();
+                break;
+            case R.id.nav_logout:
+                logout();
+                break;
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
-    public class EditTextListAdapter extends BaseAdapter {
+    private void logout() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
+        firebaseAuth.signOut();
+        startActivity(new Intent(FragContainer.this,login.class));
+    }
+
+    /*@Override
+    public void setAdapterForListView(ListView lv, EditTextListAdapter adp) {
+//        adp = new EditTextListAdapter();
+//        lv.setAdapter(adp);
+    }*/
+
+    /*@Override
+    public void addSub(ListView lv, EditTextListAdapter adapter) {
+//        adapter.addMoreItemToList();
+    }*/
+
+    public class EditTextListAdapter /*extends BaseAdapter*/ {
         private LayoutInflater layoutInflater;
         private ArrayList<ListItem> list;
 
         public EditTextListAdapter() {
             super();
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            list = new ArrayList<>();
-            notifyDataSetChanged();
+//            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            list = new ArrayList<>();
+//            notifyDataSetChanged();
         }
         public void addMoreItemToList() {
-            ListItem listItem = new ListItem();
-            listItem.caption = "Subject";
-            list.add(listItem);
+//            ListItem listItem = new ListItem();
+//            listItem.caption = "Subject";
+//            list.add(listItem);
         }
-        @Override
+//        @Override
         public int getCount() {
             return list.size();
         }
 
-        @Override
+//        @Override
         public Object getItem(int i) {
             return i;
         }
 
-        @Override
+//        @Override
         public long getItemId(int i) {
             return i;
         }
 
-        @Override
+//        @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            /*viewGroup.removeView(view);
             ViewHolder holder;
             if(view == null) {
                 holder = new ViewHolder();
@@ -122,7 +184,8 @@ public class FragContainer extends AppCompatActivity implements NavigationView.O
                 }
             });
 
-            return view;
+            return view;*/
+            return null;
         }
     }
     class ViewHolder {

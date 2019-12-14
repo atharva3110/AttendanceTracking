@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -19,7 +19,7 @@ public class TimeTableUploader extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private TimeTableUploaderListner mListener;
+    private TimeTableUploaderListener mListener;
 
     public TimeTableUploader() {
 
@@ -42,27 +42,36 @@ public class TimeTableUploader extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    private ListView listView;
-    private FragContainer.EditTextListAdapter listAdapter;
-    private Spinner spinner;
+//    private ListView listView;
+//    private FragContainer.EditTextListAdapter listAdapter;
+//    private Spinner spinner;
 
+    private Button addSubject;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_upload_timetable, container, true);
+        View v = inflater.inflate(R.layout.frag_upload_timetable, container, false);
 
-        listView = v.findViewById(R.id.subject_collector);
-        listView.setItemsCanFocus(true);
+//        addSubject = v.findViewById(R.id.add_sub);
+//        listView = v.findViewById(R.id.subject_collector);
+//        listView.setItemsCanFocus(true);
 
-        spinner = v.findViewById(R.id.week_selector);
-        mListener.setAdapterForListView(listView, listAdapter);
+//        spinner = v.findViewById(R.id.week_selector);
+//        mListener.setAdapterForListView(listView, listAdapter);
+
+//        addSubject.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mListener.addSub(listView, listAdapter);
+//            }
+//        });
         return v;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof TimeTableUploaderListner) {
-            mListener = (TimeTableUploaderListner) context;
+        if (context instanceof TimeTableUploaderListener) {
+            mListener = (TimeTableUploaderListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -75,7 +84,8 @@ public class TimeTableUploader extends Fragment {
         mListener = null;
     }
 
-    public interface TimeTableUploaderListner {
-        void setAdapterForListView(ListView lv, BaseAdapter ba);
+    public interface TimeTableUploaderListener {
+//        void setAdapterForListView(ListView lv, FragContainer.EditTextListAdapter adp);
+//        void addSub(ListView lv, FragContainer.EditTextListAdapter adapter);
     }
 }
